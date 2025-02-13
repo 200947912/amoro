@@ -42,7 +42,8 @@ case class ResolveMergeIntoMixedFormatTableReferences(spark: SparkSession)
             if (mixedSparkTable.table().isKeyedTable) {
               val primaryKeys = mixedSparkTable.table().asKeyedTable().primaryKeySpec().fieldNames()
               val attributes = aliasedTable.output.filter(p => primaryKeys.contains(p.name))
-              val condRefs = cond.references.filter(f => attributes.contains(f))
+//              val condRefs = cond.references.filter(f => attributes.contains(f))
+              val condRefs = attributes.filter(attr => cond.references.contains(attr))
               if (condRefs.isEmpty) {
                 throw new UnsupportedOperationException(
                   s"Condition ${cond.references}. is not allowed because is not a primary key")
